@@ -10,12 +10,12 @@ import style from './itemCounter.module.css';
 /* HOOKS => Functions for control state */
 interface ItemCounterProps {
     name: string;
-    quantity: number | undefined;
+    quantity?: number | undefined;
 }
 
-export function ItemCounterApp({name, quantity}: ItemCounterProps) {
-    const [count, setCount] = useState(quantity ?? 0);
-    
+export function ItemCounterApp({ name, quantity = 1 }: ItemCounterProps) {
+    const [count, setCount] = useState(quantity);
+
     const handleAdd = () => {
         setCount(count + 1);
     }
@@ -24,7 +24,7 @@ export function ItemCounterApp({name, quantity}: ItemCounterProps) {
         if (count === 1) return;
         setCount(count - 1);
     }
-    
+
     return (
         <section className={style['item-row']}>
             <span
@@ -39,7 +39,7 @@ export function ItemCounterApp({name, quantity}: ItemCounterProps) {
             >+1</button>
             <span>{count}</span>
             <button
-            onClick={handleSubtract}
+                onClick={handleSubtract}
             >-1</button>
         </section>
     )
