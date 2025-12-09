@@ -4,7 +4,7 @@ import { CustomHeader } from "./shared/components/CustomHeader";
 import { SearchBar } from "./shared/components/SearchBar";
 import { useGifs } from "./gifs/hooks/useGifs";
 
-export function GifsApp() {
+export const GifsApp = () => {
 
     const {gifs, previousTerms, handleSearch, handleTermClicked} = useGifs();
 
