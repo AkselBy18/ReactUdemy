@@ -1,17 +1,17 @@
 import { useEffect, useState, type KeyboardEvent } from "react";
 
 interface Props {
-    buttonText: string;
+    buttonText?: string;
     placeholder?: string;
     onQuery: (query: string) => void;
 }
 
-export function SearchBar({ buttonText, placeholder = 'Buscar', onQuery }: Props) {
+export function SearchBar({ buttonText='Buscar', placeholder = 'Buscar', onQuery }: Props) {
     const [query, setQuery] = useState('');
     useEffect(() => {
         const timeOutId = setTimeout(() => {
             onQuery(query);
-        }, 7000);
+        }, 700);
 
         return () => {
             clearTimeout(timeOutId);

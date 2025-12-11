@@ -7,7 +7,7 @@ export function MyCounterApp() {
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}
     >
-      <h1>Counter:  {counter}</h1>  
+      <h1>Counter: {counter}</h1>  
 
       <div style={{display: 'flex', gap: 10}}>
         <button

@@ -15,7 +15,9 @@ export function useGifs() {
             setGifs(gifsCache.current[term]);
             return;
         }
-        setGifs(await getGifsByQuery(term));
+        const gifs = await getGifsByQuery(term)
+        setGifs(gifs);
+        gifsCache.current[term] = gifs;
     };
 
     const handleSearch = async (query: string) => {
@@ -23,7 +25,7 @@ export function useGifs() {
         if (!query) return;
         if (previousTerms.includes(query)) return;
     
-        setPreviousTerms([query, ...previousTerms].slice(0, 7));
+        setPreviousTerms([query, ...previousTerms].slice(0, 8));
         const gifs = await getGifsByQuery(query);
         setGifs(gifs);
         gifsCache.current[query] = gifs;
