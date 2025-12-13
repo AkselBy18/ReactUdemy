@@ -2,7 +2,7 @@
 // Es necesario componentes de Shadcn/ui
 // https://ui.shadcn.com/docs/installation/vite
 
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
