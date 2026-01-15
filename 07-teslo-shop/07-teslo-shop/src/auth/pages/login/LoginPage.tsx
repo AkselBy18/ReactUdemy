@@ -3,17 +3,18 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { CustomLogo } from "@/components/custom/CustomLogo"
+import { useAuthStore } from "@/auth/store/auth.store"
 import { Link, useNavigate } from "react-router"
 import { useState, type FormEvent } from "react"
-import { loginAction } from "@/auth/actions/login.action"
 import { toast } from "sonner"
 
 export const LoginPage = () => {
 
   const navigate = useNavigate();
+  const { login } = useAuthStore();
   const [isPosting, setIsPosting] = useState(false)
 
-  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsPosting(true);
 
@@ -21,15 +22,14 @@ export const LoginPage = () => {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    try {
-      const data = await loginAction(email, password);
-      localStorage.setItem('token', data.token);
+    const hasSuccess = await login(email, password);
+
+    if (hasSuccess) {
 
       navigate('/');
-    } catch (error) {
-      toast.error('Correo y/o contraseña no validos')
+      return;
     }
-
+    toast.error('Correo y/o contraseña no validos');
     setIsPosting(false);
   }
 
@@ -63,7 +63,7 @@ export const LoginPage = () => {
                     ¿Olvidaste tu contraseña?
                   </a>
                 </div>
-                <Input id="password" name="password" type="password" required placeholder="Contraseña" />
+                <Input id="password" name="password" type="text" required placeholder="Contraseña" />
               </div>
               <Button
                 type="submit"
