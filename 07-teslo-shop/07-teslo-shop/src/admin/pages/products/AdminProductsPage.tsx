@@ -2,10 +2,15 @@ import { AdminTitle } from "@/admin/components/AdminTitle"
 import { CustomPagination } from "@/components/custom/CustomPagination"
 import { Button } from "@/components/ui/button"
 import { TableHeader, TableRow, TableHead, TableBody, TableCell, Table } from "@/components/ui/table"
-import { PlusIcon } from "lucide-react"
+import { CurrencyFormatter } from "@/lib/currency-formatter"
+import { useProducts } from "@/shop/hooks/useProducts"
+import { PencilIcon, PlusIcon } from "lucide-react"
 import { Link } from "react-router"
 
 export const AdminProductsPage = () => {
+
+  const { data } = useProducts();
+
   return (
     <>
       <AdminTitle
@@ -22,10 +27,10 @@ export const AdminProductsPage = () => {
         </Link>
       </div>
 
-      <Table className="bg-white p-10 shadow-xs border border-gray-200 mb-10">
+      <Table className="bg-white p-10 shadow-xs border border-gray-200 mb-10 overflow-auto">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">ID</TableHead>
+            <TableHead className="w-25">ID</TableHead>
             <TableHead>Imagen</TableHead>
             <TableHead>Nombre</TableHead>
             <TableHead>Precio</TableHead>
@@ -36,28 +41,52 @@ export const AdminProductsPage = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">1</TableCell>
-            <TableCell>
-              <img src="https://placehold.co/100x100" />
-            </TableCell>
-            <TableCell>Producto 1</TableCell>
-            <TableCell>$250.00</TableCell>
-            <TableCell>Categoria 1</TableCell>
-            <TableCell>100 Stok</TableCell>
-            <TableCell>XL, S, L</TableCell>
-            <TableCell>
-              <Link
-                to={`/admin/product/t-shirt-teslo`}>
-                Editar
-              </Link>
-            </TableCell>
-          </TableRow>
+          {
+            data?.products.map(product => (
+              <TableRow>
+                <TableCell className="font-medium">
+                  {product.slug}
+                </TableCell>
+                <TableCell>
+                  <img className="w-3xl" src={product.images[0]} />
+                </TableCell>
+                <TableCell>
+                  <Link to={`/admin/product/${product.slug}`}
+                    className="hover:text-blue-600 hover:underline">
+                    {product.title}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  ${CurrencyFormatter(product.price)}
+                </TableCell>
+                <TableCell>
+                  {product.gender}
+                </TableCell>
+                <TableCell>
+                  {product.stock} stock
+                </TableCell>
+                <TableCell>
+                  {product.sizes.join(', ')}
+                </TableCell>
+                <TableCell>
+
+                  <Link
+                    to={`/admin/product/${product.id}`}>
+                    <Button variant='secondary'
+                      className="hover:bg-blue-500 hover:text-white">
+                      <PencilIcon
+                        className="w-4 h-4" />
+                    </Button>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))
+          }
         </TableBody>
       </Table>
 
 
-      <CustomPagination totalPages={10} />
+      <CustomPagination totalPages={data?.pages || 0} />
     </>
   )
 }
